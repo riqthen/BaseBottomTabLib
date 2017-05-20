@@ -219,11 +219,11 @@ public class BottomTabView extends LinearLayout {
             } else {
                 this.textColorPress = textColorPress;
             }
-
             View view = LayoutInflater.from(super.getContext()).inflate(R.layout.view_tab_item, this);
-            // 去掉点击的背景效果
+            // TODO: 去掉点击的背景效果 follow lines：2 --->
             LinearLayout viewTabView = (LinearLayout) findViewById(R.id.viewTabView);
             viewTabView.setBackgroundResource(R.color.transparent);
+
             tvTitle = (TextView) view.findViewById(R.id.tvTitle);
             ivIcon = (ImageView) view.findViewById(R.id.ivIcon);
             if (iconResDefault == 0) {

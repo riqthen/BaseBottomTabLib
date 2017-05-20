@@ -28,8 +28,6 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
     private LinearLayout lyMain;
     private boolean isOutTab;
 
-    private boolean vpScrollable = true;   //viewPager是否可滑动
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +41,8 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
         } else {
             btvTab.setTabItemViews(getTabViews(), setCenterView(iconRes, iconWidth, iconHeight, leftMargin, rightMargin,isOutTab));
         }
-        mvp.setScrollable(vpScrollable);
+        // TODO: viewPager是否可滑动  Follow：1 --->
+        mvp.setScrollable(isVpScrollable());
         mvp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         btvTab.setOnTabItemSelectListener(new BottomTabView.OnTabItemSelectListener() {
             @Override
@@ -84,6 +83,14 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
         });
 //        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dip2px(this, setBottomTabHeight()));
 //        btvTab.setLayoutParams(params);
+    }
+
+    /**
+     *
+     * @return 默认viewPager不可滑动
+     */
+    public boolean isVpScrollable() {
+        return false;
     }
 
 //    /**
@@ -138,14 +145,7 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
 //    }
 
 
-    /**
-     * 设置ViewPager是否可以滑动
-     *
-     * @param vpScrollable
-     */
-    public void setVpScrollable(boolean vpScrollable) {
-        this.vpScrollable = vpScrollable;
-    }
+
 
 
     /**
