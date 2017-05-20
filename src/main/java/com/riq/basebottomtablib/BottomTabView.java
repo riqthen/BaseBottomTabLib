@@ -16,8 +16,8 @@ import java.util.List;
 
 /**
  * Created by riq on 2017/5/19.
+ * 自定义View，底部栏
  */
-
 public class BottomTabView extends LinearLayout {
 
     /**
@@ -45,11 +45,9 @@ public class BottomTabView extends LinearLayout {
 
     /**
      * 连接 Viewpager
-     *
-     * @param viewPager
      */
-    public void setupWithViewPager(final ViewPager viewPager) {
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    public void setupWithViewPager(final ViewPager vp) {
+        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -67,7 +65,7 @@ public class BottomTabView extends LinearLayout {
         setOnTabItemSelectListener(new OnTabItemSelectListener() {
             @Override
             public void onTabItemSelect(int position) {
-                viewPager.setCurrentItem(position);
+                vp.setCurrentItem(position);
             }
         });
     }
@@ -160,14 +158,14 @@ public class BottomTabView extends LinearLayout {
     /**
      * 第二次被选择的监听器
      */
-    public interface OnSecondSelectListener {
+    interface OnSecondSelectListener {
         void onSecondSelect(int position);
     }
 
     /**
      * 第一次被选择的监听器
      */
-    public interface OnTabItemSelectListener {
+    interface OnTabItemSelectListener {
         void onTabItemSelect(int position);
     }
 
@@ -225,7 +223,7 @@ public class BottomTabView extends LinearLayout {
             this.iconResDefault = iconResDefault;
             this.iconResPress = iconResPress;
             View view = LayoutInflater.from(super.getContext()).inflate(R.layout.view_tab_item, this);
-            // TODO: 2017/5/20 去掉点击的背景效果
+            // 去掉点击的背景效果
             LinearLayout viewTabView = (LinearLayout) findViewById(R.id.viewTabView);
             viewTabView.setBackgroundResource(R.color.transparent);
 
