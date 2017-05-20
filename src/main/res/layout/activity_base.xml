@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ly_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.riq.basebottomtablib.BaseBottomTabActivity">
+
+
+    <com.riq.basebottomtablib.MyViewPager
+        android:id="@+id/mvp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.riq.basebottomtablib.BottomTabView
+        android:id="@+id/btv_tab"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" /> <!--Bottom的高度-->
+
+</LinearLayout>
