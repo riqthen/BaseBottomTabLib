@@ -1,8 +1,9 @@
 package com.riq.basebottomtablib;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -206,34 +207,26 @@ public class BottomTabView extends LinearLayout {
          * @param iconResPress     被选中时的图标      0表示没有图标
          */
         public TabItemView(Context context, String title, int leftPadding, int topPadding, int rightPadding
-                , int bottomPadding, int textColorDefault, int textColorPress, int iconResDefault, int iconResPress) {
+                , int bottomPadding, @ColorInt int textColorDefault, @ColorInt int textColorPress, int iconResDefault, int iconResPress) {
             super(context);
             this.title = title;
-            if (textColorDefault == 0) {
-                this.textColorDefault = R.color.black;
-            } else {
-                this.textColorDefault = textColorDefault;
-            }
-            if (textColorPress == 0) {
-                this.textColorPress = R.color.black;
-            } else {
-                this.textColorPress = textColorPress;
-            }
+
+            this.textColorDefault = textColorDefault;
+            this.textColorPress = textColorPress;
             View view = LayoutInflater.from(super.getContext()).inflate(R.layout.view_tab_item, this);
             // TODO: 去掉点击的背景效果 follow lines：2 --->
             LinearLayout viewTabView = (LinearLayout) findViewById(R.id.viewTabView);
             viewTabView.setBackgroundResource(R.color.transparent);
-
             tvTitle = (TextView) view.findViewById(R.id.tvTitle);
             ivIcon = (ImageView) view.findViewById(R.id.ivIcon);
             if (iconResDefault == 0) {
                 ivIcon.setVisibility(GONE);
-            }else {
+            } else {
                 this.iconResDefault = iconResDefault;
             }
             if (iconResPress == 0) {
                 ivIcon.setVisibility(GONE);
-            }else {
+            } else {
                 this.iconResPress = iconResPress;
             }
             LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -252,9 +245,24 @@ public class BottomTabView extends LinearLayout {
         /**
          * 设置状态
          */
-        private void setStatus(int status) {
-            tvTitle.setTextColor(ContextCompat.getColor(super.getContext(), status == PRESS ? textColorPress : textColorDefault));
-            ivIcon.setImageResource(status == PRESS ? iconResPress : iconResDefault);
+        private void setStatus(int state) {    //是R.color. 还是Color.
+            //默认是Color.
+            tvTitle.setTextColor(state == PRESS ? textColorPress : textColorDefault);
+            if (textColorDefault == 0) {
+                tvTitle.setTextColor(Color.BLUE);
+            } else {
+                tvTitle.setTextColor(state == PRESS ? textColorPress : textColorDefault);
+            }
+
+
+            if (textColorPress == 0) {
+                tvTitle.setTextColor(Color.BLUE);
+            } else {
+                tvTitle.setTextColor(state == PRESS ? textColorPress : textColorDefault);
+            }
+            //R.color.
+//            tvTitle.setTextColor(ContextCompat.getColor(super.getContext(), state == PRESS ? textColorPress : textColorDefault));
+            ivIcon.setImageResource(state == PRESS ? iconResPress : iconResDefault);
         }
     }
 }
