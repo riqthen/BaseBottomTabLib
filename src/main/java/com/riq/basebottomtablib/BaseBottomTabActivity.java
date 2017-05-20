@@ -165,6 +165,8 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
     private int rightMargin;
 
     public View setCenterView(int iconRes, int iconWidth, int iconHeight, int leftMargin, int rightMargin,boolean isOutTab) {
+        if (iconRes==0)
+            return null;
         this.iconRes = iconRes;
         this.iconWidth = iconWidth;
         this.iconHeight = iconHeight;

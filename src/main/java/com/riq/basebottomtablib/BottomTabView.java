@@ -70,23 +70,19 @@ public class BottomTabView extends LinearLayout {
         });
     }
 
-    /**
-     * 设置 Tab Item View
-     */
+
     public void setTabItemViews(List<TabItemView> tabItemViews) {
         setTabItemViews(tabItemViews, null);
     }
 
-    /**
-     * 设置 Tab Item View
-     */
     public void setTabItemViews(List<TabItemView> tabItemViews, View centerView) {
         if (this.tabItemViews != null) {
             throw new RuntimeException("不能重复设置！");
         }
-        if (tabItemViews == null || tabItemViews.size() < 2) {
-            throw new RuntimeException("TabItemView 的数量必须大于2！");
-        }
+        // TODO: 2017/5/20 是否必须要两个及以上的页面
+//        if (tabItemViews == null || tabItemViews.size() < 2) {
+//            throw new RuntimeException("TabItemView 的数量不能小于2！");
+//        }
         this.tabItemViews = tabItemViews;
         for (int i = 0; i < tabItemViews.size(); i++) {
             if (centerView != null && i == tabItemViews.size() / 2) {
@@ -113,16 +109,12 @@ public class BottomTabView extends LinearLayout {
             });
         }
 
-        /**
-         * 将所有的 TabItem 设置为 初始化状态
-         */
+        //将所有的 TabItem 设置为 初始化状态
         for (TabItemView tab : tabItemViews) {
             tab.setStatus(TabItemView.DEFAULT);
         }
 
-        /**
-         * 默认状态选择第一个
-         */
+        //默认状态选择第一个
         updatePosition(0);
     }
 
@@ -206,30 +198,44 @@ public class BottomTabView extends LinearLayout {
         }
 
         /**
-         * @param title            标题
+         * @param title            标题               ""表示只有图标
          * @param leftPadding      图标padding
-         * @param textColorDefault 标题默认颜色
-         * @param textColorPress   标题被选中时的颜色
-         * @param iconResDefault   默认图标
-         * @param iconResPress     被选中时的图标
+         * @param textColorDefault 标题默认颜色        0表示黑色
+         * @param textColorPress   标题被选中时的颜色  0表示黑色
+         * @param iconResDefault   默认图标            0表示没有图标
+         * @param iconResPress     被选中时的图标      0表示没有图标
          */
         public TabItemView(Context context, String title, int leftPadding, int topPadding, int rightPadding
                 , int bottomPadding, int textColorDefault, int textColorPress, int iconResDefault, int iconResPress) {
             super(context);
-
             this.title = title;
-            this.textColorDefault = textColorDefault;
-            this.textColorPress = textColorPress;
-            this.iconResDefault = iconResDefault;
-            this.iconResPress = iconResPress;
+            if (textColorDefault == 0) {
+                this.textColorDefault = R.color.black;
+            } else {
+                this.textColorDefault = textColorDefault;
+            }
+            if (textColorPress == 0) {
+                this.textColorPress = R.color.black;
+            } else {
+                this.textColorPress = textColorPress;
+            }
+
             View view = LayoutInflater.from(super.getContext()).inflate(R.layout.view_tab_item, this);
             // 去掉点击的背景效果
             LinearLayout viewTabView = (LinearLayout) findViewById(R.id.viewTabView);
             viewTabView.setBackgroundResource(R.color.transparent);
-
             tvTitle = (TextView) view.findViewById(R.id.tvTitle);
             ivIcon = (ImageView) view.findViewById(R.id.ivIcon);
-
+            if (iconResDefault == 0) {
+                ivIcon.setVisibility(GONE);
+            }else {
+                this.iconResDefault = iconResDefault;
+            }
+            if (iconResPress == 0) {
+                ivIcon.setVisibility(GONE);
+            }else {
+                this.iconResPress = iconResPress;
+            }
             LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.weight = 1;
             view.setLayoutParams(layoutParams);
