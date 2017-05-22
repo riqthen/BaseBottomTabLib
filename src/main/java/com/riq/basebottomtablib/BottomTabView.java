@@ -1,8 +1,8 @@
 package com.riq.basebottomtablib;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -181,14 +181,22 @@ public class BottomTabView extends LinearLayout {
         /**
          * 标题的两个状态的颜色 选中、未选中
          */
-        public int textColorDefault;    //默认文字颜色
-        public int textColorPress;      //点击后的颜色
+        public
+        @ColorInt
+        int textColorDefault;    //默认文字颜色
+        public
+        @ColorInt
+        int textColorPress;      //点击后的颜色
 
         /**
          * 两个图标的 资源 id ，选中、未选中
          */
-        public int iconResDefault;      //默认图标
-        public int iconResPress;        //点击后图标
+        public
+        @DrawableRes
+        int iconResDefault;      //默认图标
+        public
+        @DrawableRes
+        int iconResPress;        //点击后图标
 
         public TextView tvTitle;        //文字
         public ImageView ivIcon;        //图标
@@ -199,15 +207,15 @@ public class BottomTabView extends LinearLayout {
         }
 
         /**
-         * @param title            标题               ""表示只有图标
+         * @param title            标题               "" 表示只有图标
          * @param leftPadding      图标padding
-         * @param textColorDefault 标题默认颜色        0表示黑色
-         * @param textColorPress   标题被选中时的颜色  0表示黑色
-         * @param iconResDefault   默认图标            0表示没有图标
-         * @param iconResPress     被选中时的图标      0表示没有图标
+         * @param textColorDefault 标题默认颜色        数字 表示透明
+         * @param textColorPress   标题被选中时的颜色  数字 表示透明
+         * @param iconResDefault   默认图标            0 表示没有图标
+         * @param iconResPress     被选中时的图标      0 表示没有图标
          */
-        public TabItemView(Context context, String title, int leftPadding, int topPadding, int rightPadding
-                , int bottomPadding, @ColorInt int textColorDefault, @ColorInt int textColorPress, int iconResDefault, int iconResPress) {
+        public TabItemView(Context context, String title, int leftPadding, int topPadding, int rightPadding, int bottomPadding
+                , @ColorInt int textColorDefault, @ColorInt int textColorPress, @DrawableRes int iconResDefault, @DrawableRes int iconResPress) {
             super(context);
             this.title = title;
 
@@ -248,18 +256,6 @@ public class BottomTabView extends LinearLayout {
         private void setStatus(int state) {    //是R.color. 还是Color.
             //默认是Color.
             tvTitle.setTextColor(state == PRESS ? textColorPress : textColorDefault);
-            if (textColorDefault == 0) {
-                tvTitle.setTextColor(Color.BLUE);
-            } else {
-                tvTitle.setTextColor(state == PRESS ? textColorPress : textColorDefault);
-            }
-
-
-            if (textColorPress == 0) {
-                tvTitle.setTextColor(Color.BLUE);
-            } else {
-                tvTitle.setTextColor(state == PRESS ? textColorPress : textColorDefault);
-            }
             //R.color.
 //            tvTitle.setTextColor(ContextCompat.getColor(super.getContext(), state == PRESS ? textColorPress : textColorDefault));
             ivIcon.setImageResource(state == PRESS ? iconResPress : iconResDefault);

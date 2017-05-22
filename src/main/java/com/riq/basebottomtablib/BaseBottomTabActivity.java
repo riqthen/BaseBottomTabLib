@@ -1,6 +1,7 @@
 package com.riq.basebottomtablib;
 
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -36,10 +37,10 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
         btvTab = (BottomTabView) findViewById(R.id.btv_tab);
         mvp = (MyViewPager) findViewById(R.id.mvp);
         //是否有CenterView的情况
-        if (setCenterView(iconRes, iconWidth, iconHeight, leftMargin, rightMargin,isOutTab) == null) {
+        if (setCenterView(iconRes, iconWidth, iconHeight, leftMargin, rightMargin, isOutTab, null, null) == null) {
             btvTab.setTabItemViews(getTabViews());
         } else {
-            btvTab.setTabItemViews(getTabViews(), setCenterView(iconRes, iconWidth, iconHeight, leftMargin, rightMargin,isOutTab));
+            btvTab.setTabItemViews(getTabViews(), setCenterView(iconRes, iconWidth, iconHeight, leftMargin, rightMargin, isOutTab, null, null));
         }
         // TODO: viewPager是否可滑动  Follow：1 --->
         mvp.setScrollable(isVpScrollable());
@@ -86,7 +87,6 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @return 默认viewPager不可滑动
      */
     public boolean isVpScrollable() {
@@ -145,27 +145,27 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
 //    }
 
 
-
-
-
-    /**
-     * 设置CenterView按钮
-     *
-     * @param iconRes     按钮图片
-     * @param iconWidth   图片宽 ViewGroup.LayoutParams.WRAP_CONTENT
-     * @param iconHeight  图片高
-     * @param leftMargin  图片左Margin
-     * @param rightMargin 图片右Margin
-     * @return
-     */
     private int iconRes;
     private int iconWidth;
     private int iconHeight;
     private int leftMargin;
     private int rightMargin;
 
-    public View setCenterView(int iconRes, int iconWidth, int iconHeight, int leftMargin, int rightMargin,boolean isOutTab) {
-        if (iconRes==0)
+    /**
+     * 设置CenterView按钮
+     *
+     * @param iconRes             按钮图片
+     * @param iconWidth           图片宽 ViewGroup.LayoutParams.WRAP_CONTENT
+     * @param iconHeight          图片高
+     * @param leftMargin          图片左Margin
+     * @param rightMargin         图片右Margin
+     * @param isOutTab            是否溢出边缘
+     * @param onClickListener     点击事件
+     * @param onLongClickListener 长按事件
+     * @return
+     */
+    public View setCenterView(@DrawableRes int iconRes, int iconWidth, int iconHeight, int leftMargin, int rightMargin, boolean isOutTab, final View.OnClickListener onClickListener, final View.OnLongClickListener onLongClickListener) {
+        if (iconRes == 0)
             return null;
         this.iconRes = iconRes;
         this.iconWidth = iconWidth;
@@ -173,41 +173,34 @@ public abstract class BaseBottomTabActivity extends AppCompatActivity {
         this.leftMargin = leftMargin;
         this.rightMargin = rightMargin;
         this.isOutTab = isOutTab;
+
         ImageView centerView = new ImageView(this);
         centerView.setImageResource(iconRes);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(iconWidth, iconHeight);
         params.leftMargin = leftMargin;
         params.rightMargin = rightMargin;
         centerView.setLayoutParams(params);
+        //CenterView按钮点击事件
         centerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCenterViewClick();
+                if (onClickListener != null) {
+                    onClickListener.onClick(v);
+                }
             }
         });
+        //CenterView按钮长按事件
         centerView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                onCenterViewLongClick();
+                if (onLongClickListener != null) {
+                    onLongClickListener.onLongClick(v);
+                }
                 return true;
             }
         });
         return centerView;
     }
-
-
-    /**
-     * CenterView按钮点击事件
-     */
-    public void onCenterViewClick() {
-    }
-
-    /**
-     * CenterView按钮长按事件
-     */
-    public void onCenterViewLongClick() {
-    }
-
 
     //适配器
     private class MyPagerAdapter extends FragmentPagerAdapter {
