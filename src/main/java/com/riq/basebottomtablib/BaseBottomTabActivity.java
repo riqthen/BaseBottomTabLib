@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * 使用方法及功能说明：
+ * 继承该Activity
  * setVpScrollable() 设置ViewPager是否可滑动
  * setCenterView() 设置中间按钮
  * onCenterViewClick() 中间按钮的点击事件

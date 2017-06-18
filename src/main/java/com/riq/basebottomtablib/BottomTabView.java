@@ -164,7 +164,7 @@ public class BottomTabView extends LinearLayout {
 
 
     /**
-     * Item
+     * 每个按钮
      */
     public static class TabItemView extends LinearLayout {
 
@@ -178,33 +178,70 @@ public class BottomTabView extends LinearLayout {
          * Item 的标题
          */
         public String title;
-        /**
-         * 标题的两个状态的颜色 选中、未选中
-         */
-        public
-        @ColorInt
-        int textColorDefault;    //默认文字颜色
-        public
-        @ColorInt
-        int textColorPress;      //点击后的颜色
 
-        /**
-         * 两个图标的 资源 id ，选中、未选中
-         */
-        public
-        @DrawableRes
-        int iconResDefault;      //默认图标
-        public
-        @DrawableRes
-        int iconResPress;        //点击后图标
+        private int textColorDefault;    //默认文字颜色
+        private int textColorPress;      //点击后的颜色
 
-        public TextView tvTitle;        //文字
-        public ImageView ivIcon;        //图标
+        private int bgColorDefault;  //按钮默认背景颜色
+        private int bgColorPress;  //按钮默认背景颜色
 
+        private int iconResDefault;      //默认图标
+        private int iconResPress;        //点击后图标
+
+        private TextView tvTitle;        //文字
+        private ImageView ivIcon;        //图标
+        private LinearLayout viewTabView;   //按钮布局
 
         public TabItemView(Context context) {
             super(context);
         }
+
+        /**
+         * @param title            标题               "" 表示只有图标
+         * @param textColorDefault 标题默认颜色        数字 表示透明 Color.
+         * @param textColorPress   标题被选中时的颜色  数字 表示透明
+         * @param iconResDefault   默认图标            0 表示没有图标
+         * @param iconResPress     被选中时的图标      0 表示没有图标
+         */
+        public TabItemView(Context context, String title, @ColorInt int textColorDefault
+                , @ColorInt int textColorPress, @DrawableRes int iconResDefault, @DrawableRes int iconResPress
+                , @ColorInt int bgColorDefault, @ColorInt int bgColorPress) {
+            super(context);
+            this.title = title;
+
+            this.textColorDefault = textColorDefault;
+            this.textColorPress = textColorPress;
+
+            this.bgColorDefault = bgColorDefault;
+            this.bgColorPress = bgColorPress;
+
+            // TODO: 设置布局 follow：1 --->
+            View view = LayoutInflater.from(super.getContext()).inflate(R.layout.view_tab_item, this);
+            viewTabView = (LinearLayout) findViewById(R.id.viewTabView);
+            tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+            ivIcon = (ImageView) view.findViewById(R.id.ivIcon);
+            if (iconResDefault == 0) {
+                ivIcon.setVisibility(GONE);
+            } else {
+                this.iconResDefault = iconResDefault;
+            }
+            if (iconResPress == 0) {
+                ivIcon.setVisibility(GONE);
+            } else {
+                this.iconResPress = iconResPress;
+            }
+            LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.weight = 1;
+            view.setLayoutParams(layoutParams);
+            // TODO: 2017/5/20 如果设置标题为空，则只显示图标
+            if (title.trim().equals("")) {
+                tvTitle.setVisibility(GONE);
+            } else {
+                tvTitle.setText(title);
+            }
+        }
+
+
 
         /**
          * @param title            标题               "" 表示只有图标
@@ -214,17 +251,20 @@ public class BottomTabView extends LinearLayout {
          * @param iconResDefault   默认图标            0 表示没有图标
          * @param iconResPress     被选中时的图标      0 表示没有图标
          */
-        public TabItemView(Context context, String title, int leftPadding, int topPadding, int rightPadding, int bottomPadding
-                , @ColorInt int textColorDefault, @ColorInt int textColorPress, @DrawableRes int iconResDefault, @DrawableRes int iconResPress) {
+        public TabItemView(Context context, String title, int leftPadding, int topPadding
+                , int rightPadding, int bottomPadding, @ColorInt int textColorDefault
+                , @ColorInt int textColorPress, @DrawableRes int iconResDefault
+                , @DrawableRes int iconResPress, @ColorInt int bgColorDefault, @ColorInt int bgColorPress) {
             super(context);
             this.title = title;
 
             this.textColorDefault = textColorDefault;
             this.textColorPress = textColorPress;
+            this.bgColorDefault = bgColorDefault;
+            this.bgColorPress = bgColorPress;
+            // TODO: 设置布局 follow：1 --->
             View view = LayoutInflater.from(super.getContext()).inflate(R.layout.view_tab_item, this);
-            // TODO: 去掉点击的背景效果 follow lines：2 --->
-            LinearLayout viewTabView = (LinearLayout) findViewById(R.id.viewTabView);
-            viewTabView.setBackgroundResource(R.color.transparent);
+            viewTabView = (LinearLayout) findViewById(R.id.viewTabView);
             tvTitle = (TextView) view.findViewById(R.id.tvTitle);
             ivIcon = (ImageView) view.findViewById(R.id.ivIcon);
             if (iconResDefault == 0) {
@@ -247,7 +287,6 @@ public class BottomTabView extends LinearLayout {
                 tvTitle.setText(title);
             }
             view.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
-
         }
 
         /**
@@ -259,6 +298,8 @@ public class BottomTabView extends LinearLayout {
             //R.color.
 //            tvTitle.setTextColor(ContextCompat.getColor(super.getContext(), state == PRESS ? textColorPress : textColorDefault));
             ivIcon.setImageResource(state == PRESS ? iconResPress : iconResDefault);
+            //每个按钮背景颜色
+            viewTabView.setBackgroundColor(state == PRESS ? bgColorPress : bgColorDefault);
         }
     }
 }
